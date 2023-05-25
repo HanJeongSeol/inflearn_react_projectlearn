@@ -1,44 +1,18 @@
-import { useState } from "react"
-import axios from "axios"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import BlogForm from "./components/BlogForm"
+import NavBar from "./components/NavBar"
 
 function App() {
-    const [title, setTitle] = useState("")
-    const [body, setBody] = useState("")
-    const onSubmit = () => {
-        axios.post("http://localhost:3001/posts", {
-            title: title,
-            body,
-        })
-    }
     return (
-        <>
-            <div className="container">
-                <div className="mb-3">
-                    <label className="form-label">Title</label>
-                    <input
-                        className="form-control"
-                        value={title}
-                        onChange={(event) => {
-                            setTitle(event.target.value)
-                        }}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Body</label>
-                    <textarea
-                        className="form-control"
-                        value={body}
-                        onChange={(event) => {
-                            setBody(event.target.value)
-                        }}
-                    />
-                </div>
-
-                <button className="btn btn-primary" onClick={onSubmit}>
-                    Post
-                </button>
+        <Router>
+            <NavBar />
+            <div class="container">
+                <Routes>
+                    <Route path="/" element={<div>Home Page</div>}></Route>
+                    <Route path="/blogs" element={<BlogForm />}></Route>
+                </Routes>
             </div>
-        </>
+        </Router>
     )
 }
 export default App
