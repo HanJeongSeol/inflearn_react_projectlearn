@@ -1,44 +1,22 @@
-import { useState } from "react"
-import axios from "axios"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import NavBar from "./components/NavBar"
+
+// route 배열을 컴포넌트로 만들어서 사용
+import routes from "./routes"
 
 function App() {
-    const [title, setTitle] = useState("")
-    const [body, setBody] = useState("")
-    const onSubmit = () => {
-        axios.post("http://localhost:3001/posts", {
-            title: title,
-            body,
-        })
-    }
     return (
-        <>
+        <Router>
+            <NavBar />
             <div className="container">
-                <div className="mb-3">
-                    <label className="form-label">Title</label>
-                    <input
-                        className="form-control"
-                        value={title}
-                        onChange={(event) => {
-                            setTitle(event.target.value)
-                        }}
-                    />
-                </div>
-                <div className="mb-3">
-                    <label className="form-label">Body</label>
-                    <textarea
-                        className="form-control"
-                        value={body}
-                        onChange={(event) => {
-                            setBody(event.target.value)
-                        }}
-                    />
-                </div>
-
-                <button className="btn btn-primary" onClick={onSubmit}>
-                    Post
-                </button>
+                <Routes>
+                    {/* React에서 map을 사용할 시 고유 key를 지정해줘야 한다. path는 해당 path의 유일한 고유값이기 때문아 key로 지정해준다. */}
+                    {routes.map((route) => {
+                        return <Route key={route.path} path={route.path} element={route.component}></Route>
+                    })}
+                </Routes>
             </div>
-        </>
+        </Router>
     )
 }
 export default App
