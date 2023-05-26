@@ -17,9 +17,14 @@ const ListPage = () => {
         <div>
             <h1>Blogs</h1>
             {posts.map((post) => {
-                // porps사용 -> 부모 component에서 자식 component에게 데이터를 전달할 수 있다
-                // 전달할 데이터를 속성에 추가한다. title이라는 이름으로 post.title 데이터가 Card 컴포넌트에 전달된다.
-                return <Card key={post.id} title={post.title} />
+                // Card 컴포넌트를 사용하는 곳들이 모두 같은 데이터 형식을 갖지 않는다.
+                // 이를 해결하기 위해 props의 children을 사용한다.
+                // 컴포넌트 태그 사이에 데이터를 넣어준다.
+                return (
+                    <Card key={post.id} title={post.title}>
+                        <button>button</button>
+                    </Card>
+                )
             })}
         </div>
     )
