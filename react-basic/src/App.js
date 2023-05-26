@@ -1,23 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-// BlogFrom 컴포넌트는 CreatePage에서 보여주기 때문에 삭제
 import NavBar from "./components/NavBar"
-// 페이지 컴포넌트 import
-import HomePage from "./pages/HomePage"
-import CreatePage from "./pages/CreatePage"
-import EditPage from "./pages/EditPage"
-import ListPage from "./pages/ListPage"
+
+// route 배열을 컴포넌트로 만들어서 사용
+import routes from "./routes"
 
 function App() {
     return (
         <Router>
             <NavBar />
-            <div class="container">
+            <div className="container">
                 <Routes>
-                    <Route path="/" element={<HomePage />}></Route>
-                    <Route path="/blogs" element={<ListPage />}></Route>
-                    {/* 페이지 추가 */}
-                    <Route path="/blogs/create" element={<CreatePage />}></Route>
-                    <Route path="/blogs/edit" element={<EditPage />}></Route>
+                    {/* React에서 map을 사용할 시 고유 key를 지정해줘야 한다. path는 해당 path의 유일한 고유값이기 때문아 key로 지정해준다. */}
+                    {routes.map((route) => {
+                        return <Route key={route.path} path={route.path} element={route.component}></Route>
+                    })}
                 </Routes>
             </div>
         </Router>
