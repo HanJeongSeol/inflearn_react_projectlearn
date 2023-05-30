@@ -2,7 +2,6 @@ import axios from "axios"
 import { useState, useEffect } from "react"
 import Card from "../components/Card"
 import { Link } from "react-router-dom"
-// react-router-dom@6 부터 useHistory -> useNavigate로 변경
 import { useNavigate } from "react-router-dom"
 
 const ListPage = () => {
@@ -15,6 +14,19 @@ const ListPage = () => {
             setPosts(res.data)
         })
     }
+
+    const deleteBlog = (e, id) => {
+        e.stopPropagation()
+        // axios에 delete 요청으로 서버에서 삭제시킨다
+        // db에서는 삭제되어도 아직 posts 객체에는 데이터가 담겨져 있기 때문에 setState를 사용해서 변경사항을 저장해줘야 한다.
+        axios.delete(`http://localhost:3001/posts/${id}`).then(() => {
+            // setPosts 메소드로 posts 데이터를 업데이트 한다.
+            // post 객체에서 전달받은 id와 동일하지 않은 객체들만 반환하여 삭제된 데이터는 posts 객체에 포함되지 않도록 한다.
+            // 함수의 반환값에 return 명령어 대신 중괄호를 제외하면 바로 반환시켜준다.
+            setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id))
+        })
+    }
+
     useEffect(() => {
         getPosts()
     }, [])
@@ -31,22 +43,8 @@ const ListPage = () => {
             {posts.map((post) => {
                 return (
                     <Card key={post.id} title={post.title} onClick={() => navigate("/blogs/edit")}>
-                        {/* 삭제 버튼 추가 */}
                         <div>
-                            {/* 
-                                onClick 이벤트로 console창에 메시지만 띄어주고 싶은데 EditPage로 불필요한 이동까지 해버림  
-                                이벤트버블링 발생 -> 하위 컴포넌트에서 실행되면 상위 컴포넌트를 타고가면서 해당 컴포넌트의 onClick 이벤트를 발생시키는 현상.
-                                <body><parent><chind></chind></parent></body> -> child, parent, body 순으로 실행(parent ,body는 실행시키지 않고싶음) 
-                                따라서 Delete 버튼 클릭 시 상위 컴포넌트 <Card>의 onClick 이벤트도 실행된다.
-                                event.stopPropagation() 메서드를 사용해서 상위 컴포넌트로 전달되지 않도록 한다.
-                            */}
-                            <button
-                                className="btn btn-danger btn-sm"
-                                onClick={(e) => {
-                                    e.stopPropagation()
-                                    console.log("delete")
-                                }}
-                            >
+                            <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
                                 Delete
                             </button>
                         </div>
