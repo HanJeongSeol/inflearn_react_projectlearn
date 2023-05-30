@@ -31,9 +31,7 @@ const ShowPage = () => {
     return (
         <div>
             <div className="d-flex">
-                {/* title 최우측에 edit 버튼을 생성해서 클릭 시 수정 페이지로 이동하도록 한다. */}
                 <h1 className="flex-grow-1">{post.title}</h1>
-                {/* Link를 사용해서 버튼 클릭 시 설정한 url로 이동되도록 한다. */}
                 <div>
                     <Link className="btn btn-primary" to={`/blogs/${id}/edit`}>
                         Edit
