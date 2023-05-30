@@ -3,8 +3,8 @@ import BlogForm from "../components/BlogForm"
 const EditPage = () => {
     return (
         <div>
-            {/* BlogForm 컴포넌트에 edting 데이터 전달 */}
-            <BlogForm edting={true} />
+            {/* BlogForm 컴포넌트에 editing 데이터 전달 */}
+            <BlogForm editing={true} />
         </div>
     )
 }

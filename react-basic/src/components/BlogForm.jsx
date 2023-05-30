@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom"
 import PropTypes from "prop-types"
 
 // BlogForm 컴포넌트가 create, edit 두 페이지에서 사용되고 있다.
-// bool 타입 데이터를 받는 edting을 매개변수로 설정해서 분기를 설정한다.
-const BlogForm = ({ edting }) => {
+// bool 타입 데이터를 받는 editing을 매개변수로 설정해서 분기를 설정한다.
+const BlogForm = ({ editing }) => {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
     // url에서 id 파라미터를 가져온다
@@ -22,22 +22,31 @@ const BlogForm = ({ edting }) => {
             setBody(res.data.body)
         })
     }, [id])
+
+    // 버튼 클릭 시 edit인 경우 axios.patch로 데이터가 update 되도록 한다.
     const onSubmit = () => {
-        axios
-            .post("http://localhost:3001/posts", {
-                title: title,
+        if (editing) {
+            axios.patch(`http://localhost:3001/posts/${id}`, {
+                title,
                 body,
-                createdAt: Date.now(),
             })
-            .then(() => {
-                navigate("/blogs")
-            })
+        } else {
+            axios
+                .post("http://localhost:3001/posts", {
+                    title: title,
+                    body,
+                    createdAt: Date.now(),
+                })
+                .then(() => {
+                    navigate("/blogs")
+                })
+        }
     }
 
     return (
         <div>
-            {/* 삼항연산자로 edting 값에 따라서 다르게 출력되도록 한다. */}
-            <h1>{edting ? "Edit" : "Create"} a blog post</h1>
+            {/* 삼항연산자로 editing 값에 따라서 다르게 출력되도록 한다. */}
+            <h1>{editing ? "Edit" : "Create"} a blog post</h1>
             <div className="mb-3">
                 <label className="form-label">Title</label>
                 <input
@@ -61,17 +70,17 @@ const BlogForm = ({ edting }) => {
 
             <button className="btn btn-primary" onClick={onSubmit}>
                 {/* 버튼 이름 변경 */}
-                {edting ? "Edit" : "Post"}
+                {editing ? "Edit" : "Post"}
             </button>
         </div>
     )
 }
 
 BlogForm.propTypes = {
-    edting: PropTypes.bool,
+    editing: PropTypes.bool,
 }
 
 BlogForm.defaultProps = {
-    edting: false,
+    editing: false,
 }
 export default BlogForm
