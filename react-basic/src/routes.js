@@ -19,9 +19,9 @@ const routes = [
         path: "/blogs/create",
         component: <CreatePage />,
     },
-
+    // 상세 페이지 수정 route
     {
-        path: "/blogs/edit",
+        path: "/blogs/:id/edit",
         component: <EditPage />,
     },
     {

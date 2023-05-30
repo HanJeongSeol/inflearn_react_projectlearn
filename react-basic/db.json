@@ -1,10 +1,11 @@
 {
-    "posts": [
-        {
-            "title": "시간",
-            "body": "추가",
-            "createdAt": 1685427771339,
-            "id": 4
-        }
-    ]
+  "posts": [
+    {
+      "title": "시간",
+      "body": "추가1",
+      "createdAt": 1685427771339,
+      "id": 4,
+      "publish": true
+    }
+  ]
 }
