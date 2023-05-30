@@ -11,6 +11,9 @@ const BlogForm = ({ editing }) => {
     const [originalTitle, setOriginalTitle] = useState("")
     const [body, setBody] = useState("")
     const [originalBody, setOriginalBody] = useState("")
+    // post 공개 여부
+    const [publish, setPublish] = useState(false)
+    const [originalPublish, setOriginalPublish] = useState("")
 
     // url에서 id 파라미터를 가져온다
     const { id } = useParams()
@@ -28,13 +31,15 @@ const BlogForm = ({ editing }) => {
                 setOriginalTitle(res.data.title)
                 setBody(res.data.body)
                 setOriginalBody(res.data.body)
+                setPublish(res.data.publish)
+                setOriginalPublish(res.data.publish)
             })
         }
     }, [id, editing])
     // 변경된 데이터가 없을 때 버튼을 비활성 시키기 위한 메소드 둘 중 하나라도 변경된 값이 없으면 비활성화 시킨다.
     // 일치하지 않을 때 false 반한 -> 데이터가 변경되었다.
     const isEdited = () => {
-        return title !== originalTitle || body !== originalBody
+        return title !== originalTitle || body !== originalBody || publish !== originalPublish
     }
 
     // Edit 페이지에서 cancel 버튼 클릭 시 post의 상세페이지로 이동.
@@ -54,6 +59,7 @@ const BlogForm = ({ editing }) => {
                 .patch(`http://localhost:3001/posts/${id}`, {
                     title,
                     body,
+                    publish,
                 })
                 .then(() => {
                     navigate(`/blogs/${id}`)
@@ -69,6 +75,14 @@ const BlogForm = ({ editing }) => {
                     navigate("/blogs")
                 })
         }
+    }
+
+    // checkbox 버튼 활성화 시 true 비활성화시 false를 반환하도록 하는 함수
+    // console.log(e.target.value)를 통해 콘솔창에 반환되는 값 확인
+    const onChangePublish = (e) => {
+        console.log(e.target.checked)
+        // publish값 변경
+        setPublish(e.target.checked)
     }
 
     return (
@@ -95,6 +109,19 @@ const BlogForm = ({ editing }) => {
                     }}
                 />
             </div>
+
+            {/* post 공개 여부 checkbox 설정 */}
+            <div className="form-check mb-3">
+                <input
+                    className="form-check-input"
+                    type="checkbox"
+                    checked={publish}
+                    // 클릭할 때 마다 버튼 이벤트 실행
+                    onChange={onChangePublish}
+                ></input>
+                <label className="form-check-label"> publish </label>
+            </div>
+
             {/* disabled가 true일 시 버튼이 비활성화 된다. isEdited()가 true인 경우 변경된 데이터가 없는 것이기 때문에 앞에 '!'를 붙인다.*/}
             <button className="btn btn-primary" onClick={onSubmit} disabled={editing && !isEdited()}>
                 {/* 버튼 이름 변경 */}
