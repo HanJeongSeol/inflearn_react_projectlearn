@@ -10,10 +10,6 @@ code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 
-/* 
-  버튼이 아닌 요소들에 마우스를 가져다 대면 포인터가 보이지 않음
-  포인터 클래스를 만들어서 사용해보기
-*/
 .cursor-pointer {
     cursor: pointer;
 }

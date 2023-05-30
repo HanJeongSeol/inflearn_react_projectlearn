@@ -30,12 +30,26 @@ const ListPage = () => {
             </div>
             {posts.map((post) => {
                 return (
-                    // 카드 클릭 시 수정 페이지로 이동.
-                    // 여기에 onClick 이벤트를 설정할 수 없으니 component 생성 파일에서 onClick 이벤트를 추가해야한다. -> Card.jsx
-                    // 테스트로 console창에 'test'를 출력하는 함수를 전달해보자.
-                    // useNavigate를 사용해서 card 클릭 시 수정페이지로 이동시킬 수 있다.
                     <Card key={post.id} title={post.title} onClick={() => navigate("/blogs/edit")}>
-                        <button>button</button>
+                        {/* 삭제 버튼 추가 */}
+                        <div>
+                            {/* 
+                                onClick 이벤트로 console창에 메시지만 띄어주고 싶은데 EditPage로 불필요한 이동까지 해버림  
+                                이벤트버블링 발생 -> 하위 컴포넌트에서 실행되면 상위 컴포넌트를 타고가면서 해당 컴포넌트의 onClick 이벤트를 발생시키는 현상.
+                                <body><parent><chind></chind></parent></body> -> child, parent, body 순으로 실행(parent ,body는 실행시키지 않고싶음) 
+                                따라서 Delete 버튼 클릭 시 상위 컴포넌트 <Card>의 onClick 이벤트도 실행된다.
+                                event.stopPropagation() 메서드를 사용해서 상위 컴포넌트로 전달되지 않도록 한다.
+                            */}
+                            <button
+                                className="btn btn-danger btn-sm"
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    console.log("delete")
+                                }}
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </Card>
                 )
             })}
