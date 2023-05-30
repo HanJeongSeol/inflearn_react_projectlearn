@@ -5,10 +5,9 @@ import { useNavigate } from "react-router-dom"
 const BlogForm = () => {
     const [title, setTitle] = useState("")
     const [body, setBody] = useState("")
-    // useNavigate로 페이지 이동
+
     const navigate = useNavigate()
 
-    // create에 성공하면 List페이지로 이동되도록 설정. then 사용
     const onSubmit = () => {
         axios
             .post("http://localhost:3001/posts", {
