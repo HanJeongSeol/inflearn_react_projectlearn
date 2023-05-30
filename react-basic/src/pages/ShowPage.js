@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import LoadingSpinner from "../components/LoadingSpinner"
 
 const ShowPage = () => {
@@ -21,7 +21,6 @@ const ShowPage = () => {
         console.log("hello")
         getPost(id)
     }, [id])
-    // timestamp 값을 우리에게 익숙한 텍스트로 보여지도록 하는 함수
     const printDate = (timestamp) => {
         return new Date(timestamp).toLocaleString()
     }
@@ -31,8 +30,16 @@ const ShowPage = () => {
     }
     return (
         <div>
-            <h1>{post.title}</h1>
-            {/* 생성 시간 출력하기 */}
+            <div className="d-flex">
+                {/* title 최우측에 edit 버튼을 생성해서 클릭 시 수정 페이지로 이동하도록 한다. */}
+                <h1 className="flex-grow-1">{post.title}</h1>
+                {/* Link를 사용해서 버튼 클릭 시 설정한 url로 이동되도록 한다. */}
+                <div>
+                    <Link className="btn btn-primary" to={`/blogs/${id}/edit`}>
+                        Edit
+                    </Link>
+                </div>
+            </div>
             <small className="text-muted">Create At: {printDate(post.createdAt)}</small>
             <hr />
             <p>{post.body}</p>
