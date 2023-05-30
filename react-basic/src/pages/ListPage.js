@@ -40,7 +40,6 @@ const ListPage = () => {
         }
         return posts.map((post) => {
             return (
-                // navigate에 사용자가 클릭한 card의 id를 파라미터로 전달하여 일치하는 페이지를 보여주도록 한다.
                 <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
                     <div>
                         <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>

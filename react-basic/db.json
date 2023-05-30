@@ -1,19 +1,10 @@
 {
-  "posts": [
-    {
-      "title": "123",
-      "body": "123",
-      "id": 1
-    },
-    {
-      "title": "tr",
-      "body": "tr",
-      "id": 2
-    },
-    {
-      "title": "test",
-      "body": "test",
-      "id": 3
-    }
-  ]
+    "posts": [
+        {
+            "title": "시간",
+            "body": "추가",
+            "createdAt": 1685427771339,
+            "id": 4
+        }
+    ]
 }

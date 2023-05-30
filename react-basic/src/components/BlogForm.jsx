@@ -7,12 +7,13 @@ const BlogForm = () => {
     const [body, setBody] = useState("")
 
     const navigate = useNavigate()
-
+    // post 생성 시간 추가. js의 Data 함수 사용. timestamp 형태로 저장된다.
     const onSubmit = () => {
         axios
             .post("http://localhost:3001/posts", {
                 title: title,
                 body,
+                createdAt: Date.now(),
             })
             .then(() => {
                 navigate("/blogs")
