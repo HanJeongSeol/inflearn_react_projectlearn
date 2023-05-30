@@ -24,7 +24,6 @@ const routes = [
         path: "/blogs/edit",
         component: <EditPage />,
     },
-    // 상세페이지를 위한 route 설정
     {
         path: "/blogs/:id",
         component: <ShowPage />,
