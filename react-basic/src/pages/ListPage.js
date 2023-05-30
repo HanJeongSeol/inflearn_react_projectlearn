@@ -38,17 +38,22 @@ const ListPage = () => {
         if (posts.length === 0) {
             return <div>No post found blog</div>
         }
-        return posts.map((post) => {
-            return (
-                <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
-                    <div>
-                        <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
-                            Delete
-                        </button>
-                    </div>
-                </Card>
-            )
-        })
+        // map 함수로 post를 모두 불러오기 전에 filter 함수를 사용해서 post의 publish 값이 true인 데이터만 가져오도록 한다.
+        return posts
+            .filter((post) => {
+                return post.publish
+            })
+            .map((post) => {
+                return (
+                    <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
+                        <div>
+                            <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
+                                Delete
+                            </button>
+                        </div>
+                    </Card>
+                )
+            })
     }
 
     return (
