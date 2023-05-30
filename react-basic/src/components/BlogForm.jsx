@@ -37,6 +37,16 @@ const BlogForm = ({ editing }) => {
         return title !== originalTitle || body !== originalBody
     }
 
+    // Edit 페이지에서 cancel 버튼 클릭 시 post의 상세페이지로 이동.
+    // Create 페이지에서 클릭 시 list 페이지로 이동
+    const goBack = () => {
+        if (editing) {
+            navigate(`/blogs/${id}`)
+        } else {
+            navigate(`/blogs`)
+        }
+    }
+
     // 버튼 클릭 시 edit인 경우 axios.patch로 데이터가 update 되도록 한다.
     const onSubmit = () => {
         if (editing) {
@@ -89,6 +99,10 @@ const BlogForm = ({ editing }) => {
             <button className="btn btn-primary" onClick={onSubmit} disabled={editing && !isEdited()}>
                 {/* 버튼 이름 변경 */}
                 {editing ? "Edit" : "Post"}
+            </button>
+            {/* cancel 버튼 클릭 시 뒤로가도록 설정 */}
+            <button className="btn btn-danger ms-2" onClick={goBack}>
+                Cancel
             </button>
         </div>
     )
