@@ -2,7 +2,7 @@ import propTypes from "prop-types"
 
 // BlogList 컴포넌트에서 사용될 때 currentPage를 넘기지 않아도 default로 1을 설정했기 때문에 적용되는거 확인
 // 삼항연산자 사용해서 currentPage 값에 따라서 active 들어가는 위치 변경
-const Pagination = ({ currentPage, numberOfPages }) => {
+const Pagination = ({ currentPage, numberOfPages, onClick }) => {
     return (
         <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-center">
@@ -18,9 +18,16 @@ const Pagination = ({ currentPage, numberOfPages }) => {
                     .map((pageNumber) => {
                         return (
                             <li key={pageNumber} className={`page-item ${currentPage === pageNumber ? "active" : ""}`}>
-                                <a className="page-link" href="#">
+                                <div
+                                    className="page-link cursor-pointer"
+                                    // BlogList의 getPosts 함수의 매개변수로 page값을 갖는다.
+                                    // onClick 실행 시 클릭한 페이지 값을 넘겨주도록 한다.
+                                    onClick={() => {
+                                        onClick(pageNumber)
+                                    }}
+                                >
                                     {pageNumber}
-                                </a>
+                                </div>
                             </li>
                         )
                     })}
@@ -38,6 +45,7 @@ Pagination.propTypes = {
     currentPage: propTypes.number,
     // 몇개의 페이지를 보여줄지 정해주는 prop
     numberOfPages: propTypes.number,
+    onClick: propTypes.func.isRequired,
 }
 
 Pagination.defaultProps = {

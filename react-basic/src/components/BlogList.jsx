@@ -12,8 +12,14 @@ const BlogList = ({ isAdmin }) => {
 
     const [loading, setLoading] = useState(true)
 
+    // 처음 currentPage를 1로 설정, pagination 컴포넌트에서
+    const [currentPage, setCurrentPage] = useState(1)
+
     // prop를 받아와서 보여줄 page를 지정, default 1페이지로 설정
+    // page의 인자 값으로 pagination 컴포넌트에서 pageNumber을 전달받는다.
+    // setCurrentPage를 실행시켜서 currentPage 값을 변경시킨다 -> 페이지 클릭 시 파란색 강조 부분도 변경되려면 리렌더링이 되어야 한다.
     const getPosts = (page = 1) => {
+        setCurrentPage(page)
         // json-server로 페이징 처리를 하려면 쿼리스트링으로 _page=? & _limit=? 값을 제공함으로서 구현한다
         // _sort=? : 정렬기준점, _order=? : 오름차순(ASC),내림차순(DESC) 설정
         // pagination3 -> 쿼리스트링 부분을 params 객체로 전달 할 수 있다.
@@ -82,7 +88,7 @@ const BlogList = ({ isAdmin }) => {
         <div>
             {renderBlogList()}
             {/* currentPage 값을 넘겨서 현재 페이지를 알려준다. */}
-            <Pagination currentPage={2} numberOfPages={5} />
+            <Pagination currentPage={currentPage} numberOfPages={5} onClick={getPosts} />
         </div>
     )
 }
