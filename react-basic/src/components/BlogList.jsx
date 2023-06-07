@@ -5,9 +5,16 @@ import LoadingSpinner from "../components/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
 import PropTypes from "prop-types"
 import Pagination from "./pagination"
+import { useLocation } from "react-router-dom"
+
 const BlogList = ({ isAdmin }) => {
     const navigate = useNavigate()
-
+    // useLocation을 사용해서 url의 쿼리스트링 부분을 가져올 수 있다 -> ?page=7
+    const location = useLocation()
+    // URLSearchParams를 사용해서 URL 파라미터 값을 key-value로 전달한다.
+    const params = new URLSearchParams(location.search)
+    // params.get('key') -> key에 해당되는 value를 가져온다
+    const pageParam = params.get("page")
     const [posts, setPosts] = useState([])
 
     const [loading, setLoading] = useState(true)
@@ -26,11 +33,19 @@ const BlogList = ({ isAdmin }) => {
         setNumberOfPages(Math.ceil(numberOfPosts / limit))
     }, [numberOfPosts])
 
+    // navigate를 사용해서 클릭해서 이동한 페이지가 기록되도록 한다.
+    // 뒤로가기 버튼 클릭 시 기록된 이전 페이지로 이동이 가능하다. (url 변경디는거 확인)
+    // 이동 후 다시 getPosts 실행하여 값을 업데이트 해야한다.
+    // location.pathname => blog에서 페이지 클릭시 똑같이 blog 페이지에서 이동되도록 pathoname를 가져왔다.
+    const onClickPageButton = (page) => {
+        navigate(`${location.pathname}?page=${page}`)
+        getPosts(page)
+    }
+
     // prop를 받아와서 보여줄 page를 지정, default 1페이지로 설정
     // page의 인자 값으로 pagination 컴포넌트에서 pageNumber을 전달받는다.
     // setCurrentPage를 실행시켜서 currentPage 값을 변경시킨다 -> 페이지 클릭 시 파란색 강조 부분도 변경되려면 리렌더링이 되어야 한다.
     const getPosts = (page = 1) => {
-        setCurrentPage(page)
         // json-server로 페이징 처리를 하려면 쿼리스트링으로 _page=? & _limit=? 값을 제공함으로서 구현한다
         // _sort=? : 정렬기준점, _order=? : 오름차순(ASC),내림차순(DESC) 설정
         // pagination3 -> 쿼리스트링 부분을 params 객체로 전달 할 수 있다.
@@ -61,6 +76,7 @@ const BlogList = ({ isAdmin }) => {
                 setLoading(false)
             })
     }
+
     const deleteBlog = (e, id) => {
         e.stopPropagation()
         axios.delete(`http://localhost:3001/posts/${id}`).then(() => {
@@ -68,9 +84,14 @@ const BlogList = ({ isAdmin }) => {
         })
     }
 
+    // 기존 useEffect는 삭제, pageParam 변경이 일어날 시 리렌더링 되도록 하나.
+    // 이 때 getPosts의 인자 값은 number 타입이 필요. pageParam은 string이기 때문에 parseInt사용
     useEffect(() => {
-        getPosts()
-    }, [])
+        // getPosts 내부의 setCurrentPage도 옮겨준다.
+        // 파라미터가 존재하지 않으면(/admin으로 접속할 시 뒤에 쿼리스트링이 존재하지 않는다.) 1페이지가 보여지도록 한다.
+        setCurrentPage(parseInt(pageParam) || 1)
+        getPosts(parseInt(pageParam) || 1)
+    }, [pageParam])
 
     if (loading) {
         return <LoadingSpinner />
@@ -106,8 +127,12 @@ const BlogList = ({ isAdmin }) => {
                 numberOfPages가 1보다 작은 경우는 한 페이지에 모든 요소들이 보여지는 경우다.
                 따라서 numberOfPages가 1보다 클 때 Pagination이 보여지도록 한다.
             */}
+
+            {/* 
+                navigate가 적용된 onClickPageButton 함수 사용
+            */}
             {numberOfPages > 1 && (
-                <Pagination currentPage={currentPage} numberOfPages={numberOfPages} onClick={getPosts} />
+                <Pagination currentPage={currentPage} numberOfPages={numberOfPages} onClick={onClickPageButton} />
             )}
         </div>
     )
