@@ -60,7 +60,8 @@ const BlogForm = ({ editing }) => {
                     publish,
                 })
                 .then(() => {
-                    navigate("/blogs")
+                    // 생성 후 admin 페이지로 이동
+                    navigate("/admin")
                 })
         }
     }
