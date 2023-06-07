@@ -12,7 +12,6 @@ const AdminPage = () => {
                     </Link>
                 </div>
             </div>
-            {/* isAdmin porps값을 true로 넘겨준다 */}
             <BlogList isAdmin={true} />
         </div>
     )

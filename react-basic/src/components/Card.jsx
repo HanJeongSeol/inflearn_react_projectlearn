@@ -3,11 +3,11 @@ import PropTypes from "prop-types"
 const Card = ({ title, onClick, children }) => {
     return (
         <div className="card mb-3 cursor-pointer" onClick={onClick}>
-            <div className="card-body">
-                <div className="d-flex justify-content-between">
-                    <div>{title}</div>
-                    {children && <div>{children}</div>}
-                </div>
+            {/* padding y 축 변경, 글자 가운데 정렬*/}
+            <div className="card-body py-2 d-flex align-items-center">
+                {/* css flex 수정, , delete 버튼 우측 고정  */}
+                <div className="flex-grow-1">{title}</div>
+                {children && <div>{children}</div>}
             </div>
         </div>
     )

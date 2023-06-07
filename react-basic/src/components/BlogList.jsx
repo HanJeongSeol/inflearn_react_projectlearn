@@ -5,7 +5,6 @@ import LoadingSpinner from "../components/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
 import PropTypes from "prop-types"
 
-// List페이지에서는 삭제버튼이 안보이게 하기 위해서 props를 하나 받는다.
 const BlogList = ({ isAdmin }) => {
     const navigate = useNavigate()
 
@@ -40,13 +39,11 @@ const BlogList = ({ isAdmin }) => {
 
     return posts
         .filter((post) => {
-            // 넘어오는 isAdmin props가 true인 경우 비공개 포스트까지 보여지게 한다.
             return isAdmin || post.publish
         })
         .map((post) => {
             return (
                 <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
-                    {/* isAdmin이 true인 경우만 delete 버튼을 보여준다 */}
                     {isAdmin ? (
                         <div>
                             <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
@@ -59,12 +56,10 @@ const BlogList = ({ isAdmin }) => {
         })
 }
 
-// Listpage, Adminpage에서 넘어오는 isAmdin porps 타입
 BlogList.propTypes = {
     isAdmin: PropTypes.bool,
 }
 
-// Admin에서만 true로 넘어오면 되기 때문에 false를 default로 설정
 BlogList.defaultProps = {
     isAdmin: false,
 }
