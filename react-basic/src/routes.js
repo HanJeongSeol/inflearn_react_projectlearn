@@ -3,8 +3,8 @@ import CreatePage from "./pages/CreatePage"
 import EditPage from "./pages/EditPage"
 import ListPage from "./pages/ListPage"
 import ShowPage from "./pages/ShowPage"
+import AdminPage from "./pages/AdminPage"
 
-// App.js의 가독성을 위해 path와 component 값을 갖는 객체를 생성한 후 하나의 배열에 넣어서 사용한다.
 const routes = [
     {
         path: "/",
@@ -19,7 +19,6 @@ const routes = [
         path: "/blogs/create",
         component: <CreatePage />,
     },
-    // 상세 페이지 수정 route
     {
         path: "/blogs/:id/edit",
         component: <EditPage />,
@@ -27,6 +26,10 @@ const routes = [
     {
         path: "/blogs/:id",
         component: <ShowPage />,
+    },
+    {
+        path: "/admin",
+        component: <AdminPage />,
     },
 ]
 

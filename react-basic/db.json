@@ -6,6 +6,27 @@
       "createdAt": 1685427771339,
       "id": 4,
       "publish": true
+    },
+    {
+      "title": "공개1",
+      "body": "공개1",
+      "createdAt": 1685433841863,
+      "publish": true,
+      "id": 5
+    },
+    {
+      "title": "공개2",
+      "body": "공개2",
+      "createdAt": 1685433848774,
+      "publish": true,
+      "id": 6
+    },
+    {
+      "title": "비공개1",
+      "body": "비공개1",
+      "createdAt": 1685433855668,
+      "publish": false,
+      "id": 7
     }
   ]
 }
