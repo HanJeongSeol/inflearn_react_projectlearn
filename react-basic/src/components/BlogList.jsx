@@ -19,7 +19,7 @@ const BlogList = ({ isAdmin }) => {
     // 총 페이지 수
     const [numberOfPages, setNumberOfPages] = useState(0)
     // 한 페이지에서 보여줄 post 수
-    const limit = 3
+    const limit = 1
 
     // 전체 posts 수가 변경 될 때 마다 실행(numberOfPosts) -> 총 페이지 수 계산
     useEffect(() => {
