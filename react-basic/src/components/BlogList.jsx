@@ -4,7 +4,7 @@ import Card from "../components/Card"
 import LoadingSpinner from "../components/LoadingSpinner"
 import { useNavigate } from "react-router-dom"
 import PropTypes from "prop-types"
-
+import Pagination from "./pagination"
 const BlogList = ({ isAdmin }) => {
     const navigate = useNavigate()
 
@@ -36,24 +36,33 @@ const BlogList = ({ isAdmin }) => {
     if (posts.length === 0) {
         return <div>No post found blog</div>
     }
-
-    return posts
-        .filter((post) => {
-            return isAdmin || post.publish
-        })
-        .map((post) => {
-            return (
-                <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
-                    {isAdmin ? (
-                        <div>
-                            <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
-                                Delete
-                            </button>
-                        </div>
-                    ) : null}
-                </Card>
-            )
-        })
+    // 기존 렌더링 부분을 함수로 변경
+    const renderBlogList = () => {
+        return posts
+            .filter((post) => {
+                return isAdmin || post.publish
+            })
+            .map((post) => {
+                return (
+                    <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
+                        {isAdmin ? (
+                            <div>
+                                <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
+                                    Delete
+                                </button>
+                            </div>
+                        ) : null}
+                    </Card>
+                )
+            })
+    }
+    // 리스트 렌더링, 페이징 부분
+    return (
+        <div>
+            {renderBlogList()}
+            <Pagination />
+        </div>
+    )
 }
 
 BlogList.propTypes = {
