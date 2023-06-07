@@ -15,16 +15,25 @@ const BlogList = ({ isAdmin }) => {
     // prop를 받아와서 보여줄 page를 지정, default 1페이지로 설정
     const getPosts = (page = 1) => {
         // json-server로 페이징 처리를 하려면 쿼리스트링으로 _page=? & _limit=? 값을 제공함으로서 구현한다
-        // _sort=? : 정렬기준점, _order=? : 오름차순,내림차순(DESC) 설정
+        // _sort=? : 정렬기준점, _order=? : 오름차순(ASC),내림차순(DESC) 설정
         // pagination3 -> 쿼리스트링 부분을 params 객체로 전달 할 수 있다.
+        // pagination4 -> publish가 true인 게시글만 가져온다.
+        // admin에서는 true,false 상관없이 전부 보여줘야하니 params를 외부 변수로 빼낸 후 publish에 대해서만 조건문 사용
+
+        let params = {
+            _page: page,
+            _limit: 5,
+            _sort: "id",
+            _order: "desc",
+        }
+        // isAdmin이 아닌 경우 기존 params 객체에 publish:true 값을 추가
+        if (!isAdmin) {
+            params = { ...params, publish: true }
+        }
+
         axios
             .get(`http://localhost:3001/posts`, {
-                params: {
-                    _page: page,
-                    _limit: 5,
-                    _sort: "id",
-                    _order: "desc",
-                },
+                params: params,
             })
             .then((res) => {
                 setPosts(res.data)
@@ -50,24 +59,23 @@ const BlogList = ({ isAdmin }) => {
         return <div>No post found blog</div>
     }
     // 기존 렌더링 부분을 함수로 변경
+    // filter을 통해서 publish가 true인 게시글만 보여지게 되는데
+    // pagination 처리를 할 때 처음 5개에서 true가 없다면 하나의 게시글도 보여지지 않게 된다.
+    // filter를 삭제하고 서버에서 true인 게시글만 조회한 후 프론트로 전달하도록 하자.
     const renderBlogList = () => {
-        return posts
-            .filter((post) => {
-                return isAdmin || post.publish
-            })
-            .map((post) => {
-                return (
-                    <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
-                        {isAdmin ? (
-                            <div>
-                                <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
-                                    Delete
-                                </button>
-                            </div>
-                        ) : null}
-                    </Card>
-                )
-            })
+        return posts.map((post) => {
+            return (
+                <Card key={post.id} title={post.title} onClick={() => navigate(`/blogs/${post.id}`)}>
+                    {isAdmin ? (
+                        <div>
+                            <button className="btn btn-danger btn-sm" onClick={(e) => deleteBlog(e, post.id)}>
+                                Delete
+                            </button>
+                        </div>
+                    ) : null}
+                </Card>
+            )
+        })
     }
     // 리스트 렌더링, 페이징 부분
     return (
