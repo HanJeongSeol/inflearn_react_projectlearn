@@ -81,7 +81,8 @@ const BlogList = ({ isAdmin }) => {
     return (
         <div>
             {renderBlogList()}
-            <Pagination />
+            {/* currentPage 값을 넘겨서 현재 페이지를 알려준다. */}
+            <Pagination currentPage={2} numberOfPages={5} />
         </div>
     )
 }
