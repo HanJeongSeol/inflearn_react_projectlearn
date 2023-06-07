@@ -14,6 +14,17 @@ const BlogList = ({ isAdmin }) => {
 
     // 처음 currentPage를 1로 설정, pagination 컴포넌트에서
     const [currentPage, setCurrentPage] = useState(1)
+    // 총 Posts 수 -> res.header의 x-total-count 값으로 확인
+    const [numberOfPosts, setNumberOfPosts] = useState(0)
+    // 총 페이지 수
+    const [numberOfPages, setNumberOfPages] = useState(0)
+    // 한 페이지에서 보여줄 post 수
+    const limit = 3
+
+    // 전체 posts 수가 변경 될 때 마다 실행(numberOfPosts) -> 총 페이지 수 계산
+    useEffect(() => {
+        setNumberOfPages(Math.ceil(numberOfPosts / limit))
+    }, [numberOfPosts])
 
     // prop를 받아와서 보여줄 page를 지정, default 1페이지로 설정
     // page의 인자 값으로 pagination 컴포넌트에서 pageNumber을 전달받는다.
@@ -28,7 +39,7 @@ const BlogList = ({ isAdmin }) => {
 
         let params = {
             _page: page,
-            _limit: 5,
+            _limit: limit,
             _sort: "id",
             _order: "desc",
         }
@@ -41,7 +52,11 @@ const BlogList = ({ isAdmin }) => {
             .get(`http://localhost:3001/posts`, {
                 params: params,
             })
+            // res 객체의 heder를 살펴보면 x-total-count 값을 확인할 수 있다.
+            // 해당 값은 요청 후 전달받은 데이터의 총 갯수이다.
+            // 페이지별로 5개씩 보여주기로 했으니 x-total-count / 5 의 결과를 올림 처리 하면 필요한 페이지 갯수를 정할 수 있다.
             .then((res) => {
+                setNumberOfPosts(res.headers["x-total-count"])
                 setPosts(res.data)
                 setLoading(false)
             })
@@ -87,8 +102,13 @@ const BlogList = ({ isAdmin }) => {
     return (
         <div>
             {renderBlogList()}
-            {/* currentPage 값을 넘겨서 현재 페이지를 알려준다. */}
-            <Pagination currentPage={currentPage} numberOfPages={5} onClick={getPosts} />
+            {/* currentPage 값을 넘겨서 현재 페이지를 알려준다. 
+                numberOfPages가 1보다 작은 경우는 한 페이지에 모든 요소들이 보여지는 경우다.
+                따라서 numberOfPages가 1보다 클 때 Pagination이 보여지도록 한다.
+            */}
+            {numberOfPages > 1 && (
+                <Pagination currentPage={currentPage} numberOfPages={numberOfPages} onClick={getPosts} />
+            )}
         </div>
     )
 }
