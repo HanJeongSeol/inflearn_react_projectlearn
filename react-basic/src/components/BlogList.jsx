@@ -20,8 +20,6 @@ const BlogList = ({ isAdmin }) => {
     const [searchText, setSearchText] = useState('')
     const limit = 5
 
-    // 7. 검색 결과와 일치하는 post를 보여주기 위해 페이징 처리를 다시 하고 리렌더링 실행.
-    // 최종적으로 리렌더링은 여기서 발생하는듯
     useEffect(() => {
         console.log('리렌더링 발생저짐')
         setNumberOfPages(Math.ceil(numberOfPosts / limit))
@@ -32,11 +30,7 @@ const BlogList = ({ isAdmin }) => {
         setCurrentPage(page)
         getPosts(page)
     }
-    // useCallback() -> 배열에 지정한 값이 변경되었을 때 실행시키는 것이 아니라 함수를 재정의하는 거다.
-    // 아무리 searchText 값을 변경된다 해도 실행시키지는 않는다.
-    // 2. 첫 실행 생성 시 1페이지에 해당하는 post 렌더링. isAdmain, searchText 변경이 발생할 때 실행된다.
 
-    //6. 마지막으로 재정의된 getPosts 함수 실행.
     const getPosts = useCallback(
         (page = 1) => {
             let params = {
@@ -69,7 +63,7 @@ const BlogList = ({ isAdmin }) => {
             setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id))
         })
     }
-    // 1. 첫 마운트 때 실행. currentPage와 getPosts 값 설정.
+
     useEffect(() => {
         setCurrentPage(parseInt(pageParam) || 1)
         getPosts(parseInt(pageParam) || 1)
@@ -100,8 +94,6 @@ const BlogList = ({ isAdmin }) => {
             )
         })
     }
-    // 5. Enter키 입력 시 실행.
-    // 마지막으로 재정의한 getPosts 함수를 실행한다.
     const onSearch = (e) => {
         if (e.key === 'Enter') {
             navigate(`${location.pathname}?page=1`)
@@ -116,10 +108,7 @@ const BlogList = ({ isAdmin }) => {
                 className="form-control"
                 placeholder="Search.."
                 value={searchText}
-                // 3. 검색창에 버튼 입력 시 setSearchText로 searchText의 업데이트 발생
-                // getPosts의 useCallback()의 searchText 변경된 값으로 재정의
                 onChange={(e) => setSearchText(e.target.value)}
-                // 4. 키 입력때마다 onSearch 함수 실행
                 onKeyUp={onSearch}
             />
             <hr />
