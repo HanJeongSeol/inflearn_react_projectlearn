@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Pagination from './pagination'
 import { useLocation } from 'react-router-dom'
+import Toast from './Toast'
 
 const BlogList = ({ isAdmin }) => {
     const navigate = useNavigate()
@@ -21,7 +22,6 @@ const BlogList = ({ isAdmin }) => {
     const limit = 5
 
     useEffect(() => {
-        console.log('리렌더링 발생저짐')
         setNumberOfPages(Math.ceil(numberOfPosts / limit))
     }, [numberOfPosts])
 
@@ -103,6 +103,13 @@ const BlogList = ({ isAdmin }) => {
     }
     return (
         <div>
+            {/* toasts 객체에 배열을 담는다. 배열에 포함되는 원소들은 모두 객체타입이다. */}
+            <Toast
+                toasts={[
+                    { text: 'error' },
+                    { text: 'success', type: 'success' },
+                ]}
+            />
             <input
                 type="text"
                 className="form-control"
