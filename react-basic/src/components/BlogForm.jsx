@@ -2,8 +2,15 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Toast from './Toast'
+import useToast from '../hooks/toast'
 
 const BlogForm = ({ editing }) => {
+    // 생성한 커스텀훅은 기존 훅 사용하듯이 사용
+    // 이름은 사용자 맘대로 정해도 되지만 순서는 지켜야한다.
+    // useRef, useState로 관리한 toasts, setToastsRerender은 삭제한다.
+    // 기존 addToasts, deleteToasts도 삭제하고 useToasts것을 사용한다.
+    const [toasts, addToast, deleteToast] = useToast()
     const [title, setTitle] = useState('')
     const [originalTitle, setOriginalTitle] = useState('')
     const [body, setBody] = useState('')
@@ -12,7 +19,6 @@ const BlogForm = ({ editing }) => {
     const [originalPublish, setOriginalPublish] = useState('')
     const [titleError, setTitleError] = useState(false)
     const [bodyError, setBodyError] = useState(false)
-
     const { id } = useParams()
 
     const navigate = useNavigate()
@@ -82,7 +88,11 @@ const BlogForm = ({ editing }) => {
                         publish,
                     })
                     .then(() => {
-                        navigate('/admin')
+                        addToast({
+                            type: 'success',
+                            text: 'successfully toast',
+                        })
+                        // navigate('/admin')
                     })
             }
         }
@@ -94,6 +104,9 @@ const BlogForm = ({ editing }) => {
 
     return (
         <div>
+            {/* 생성된 커스텀 훅 toasts.jsx에서 toasts.current를 그대로 받고있기 때문에
+            toasts로 데이터를 가져온다. */}
+            <Toast toasts={toasts} deleteToast={(id) => deleteToast(id)} />
             <h1>{editing ? 'Edit' : 'Create'} a blog post</h1>
             <div className="mb-3">
                 <label className="form-label">Title</label>

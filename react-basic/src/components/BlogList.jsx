@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Card from '../components/Card'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useNavigate } from 'react-router-dom'
@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import Pagination from './pagination'
 import { useLocation } from 'react-router-dom'
 import Toast from './Toast'
-import { v4 as uuidv4 } from 'uuid'
+import useToast from '../hooks/toast'
 
 const BlogList = ({ isAdmin }) => {
     const navigate = useNavigate()
@@ -20,7 +20,9 @@ const BlogList = ({ isAdmin }) => {
     const [numberOfPosts, setNumberOfPosts] = useState(0)
     const [numberOfPages, setNumberOfPages] = useState(0)
     const [searchText, setSearchText] = useState('')
-    const [toasts, setToasts] = useState([])
+
+    const [toasts, addToast, deleteToast] = useToast()
+
     const limit = 5
 
     useEffect(() => {
@@ -57,28 +59,6 @@ const BlogList = ({ isAdmin }) => {
         },
         [isAdmin, searchText]
     )
-    const addToast = (toast) => {
-        // toast를 삭제하려면 toast별 고유 id가 필요함
-        // uuid를 설치해서 기존 toast 데이터에 id를 추가한다.
-        const toastWithId = {
-            ...toast,
-            id: uuidv4(),
-        }
-
-        // 현재의 toast를 prev로 받아온다
-        // 기존에 있던 데이터 + 추가되는 데이터
-        setToasts((prev) => [...prev, toastWithId])
-    }
-    // 클릭 시 toast창 사라지게 하는 함수
-    const deleteToast = (id) => {
-        // id가 일치하는 경우 삭제되어 불필요한 데이터
-        // filter 함수를 통해서 불일치하는 데이터만 남겨둔다.
-        const filteredToasts = toasts.filter((toast) => {
-            return toast.id !== id
-        })
-
-        setToasts(filteredToasts)
-    }
 
     const deleteBlog = (e, id) => {
         e.stopPropagation()

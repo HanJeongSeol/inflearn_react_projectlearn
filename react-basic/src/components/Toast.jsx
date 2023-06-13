@@ -6,8 +6,6 @@ const Toast = ({ toasts, deleteToast }) => {
             {toasts.map((toast) => {
                 return (
                     <div
-                        // map 함수 사용 시 객체별 고유 key값이 필요
-                        // uuid로 생성된 고유 id값 사용
                         key={toast.id}
                         onClick={() => {
                             deleteToast(toast.id)
