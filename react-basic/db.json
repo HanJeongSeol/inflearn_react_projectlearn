@@ -48,48 +48,6 @@
       "createdAt": 1686114876519,
       "publish": false,
       "id": 10
-    },
-    {
-      "title": "item8",
-      "body": "item8",
-      "createdAt": 1686114880811,
-      "publish": false,
-      "id": 11
-    },
-    {
-      "title": "item9",
-      "body": "item9",
-      "createdAt": 1686114884753,
-      "publish": false,
-      "id": 12
-    },
-    {
-      "title": "item10",
-      "body": "item10",
-      "createdAt": 1686114889097,
-      "publish": false,
-      "id": 13
-    },
-    {
-      "title": "item11",
-      "body": "item11",
-      "createdAt": 1686114893642,
-      "publish": false,
-      "id": 14
-    },
-    {
-      "title": "item12",
-      "body": "item12",
-      "createdAt": 1686114898051,
-      "publish": false,
-      "id": 15
-    },
-    {
-      "title": "item444",
-      "body": "444",
-      "createdAt": 1686118354363,
-      "publish": true,
-      "id": 16
     }
   ]
 }
