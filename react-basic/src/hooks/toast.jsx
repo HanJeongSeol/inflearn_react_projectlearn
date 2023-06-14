@@ -1,12 +1,12 @@
-// customhooks에서 useState, useRef 사용 가능
 import { useState, useRef } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+// toastSlice의 reducers에 정의한 함수
+import { addToast as add, removeToast } from '../store/toastSlice'
+// action을 실행시키기 위한 함수
+import { useDispatch } from 'react-redux'
 
-// toasts와 관련된 custom hooks를 모아둔다.
-// hooks는 앞에 use를 붙여서 사용
 const useToast = () => {
-    const [, setToastsRerender] = useState(true)
-    const toasts = useRef([])
+    const dispatch = useDispatch()
 
     const addToast = (toast) => {
         const id = uuidv4()
@@ -14,20 +14,16 @@ const useToast = () => {
             ...toast,
             id: id,
         }
-        toasts.current = [...toasts.current, toastWithId]
-        setToastsRerender((prev) => !prev)
+        // reducer의 add함수를 useDispatch를 이용해서 실행시킨다
+        dispatch(add(toastWithId))
         setTimeout(() => {
             deleteToast(id)
         }, 5000)
     }
     const deleteToast = (id) => {
-        const filteredToasts = toasts.current.filter((toast) => {
-            return toast.id !== id
-        })
-        toasts.current = filteredToasts
-        setToastsRerender((prev) => !prev)
+        dispatch(removeToast(id))
     }
-    return [toasts.current, addToast, deleteToast]
+    return { addToast, deleteToast }
 }
 
 export default useToast

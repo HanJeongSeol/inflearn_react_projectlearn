@@ -20,55 +20,6 @@
       "createdAt": 1685433848774,
       "publish": true,
       "id": 6
-    },
-    {
-      "title": "비공개1",
-      "body": "비공개1",
-      "createdAt": 1685433855668,
-      "publish": false,
-      "id": 7
-    },
-    {
-      "title": "item5",
-      "body": "item5",
-      "createdAt": 1686114861922,
-      "publish": false,
-      "id": 8
-    },
-    {
-      "title": "item6",
-      "body": "item6",
-      "createdAt": 1686114867863,
-      "publish": false,
-      "id": 9
-    },
-    {
-      "title": "item7",
-      "body": "item7",
-      "createdAt": 1686114876519,
-      "publish": false,
-      "id": 10
-    },
-    {
-      "title": "te",
-      "body": "te",
-      "createdAt": 1686628223641,
-      "publish": false,
-      "id": 11
-    },
-    {
-      "title": "tt",
-      "body": "tt",
-      "createdAt": 1686628365119,
-      "publish": false,
-      "id": 12
-    },
-    {
-      "title": "tes",
-      "body": "tes",
-      "createdAt": 1686628415452,
-      "publish": false,
-      "id": 13
     }
   ]
 }

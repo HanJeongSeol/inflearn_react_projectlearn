@@ -6,10 +6,7 @@ import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Pagination from './pagination'
 import { useLocation } from 'react-router-dom'
-import Toast from './Toast'
 import useToast from '../hooks/toast'
-// redux 사용
-import { useSelector } from 'react-redux'
 
 const BlogList = ({ isAdmin }) => {
     const navigate = useNavigate()
@@ -22,14 +19,8 @@ const BlogList = ({ isAdmin }) => {
     const [numberOfPosts, setNumberOfPosts] = useState(0)
     const [numberOfPages, setNumberOfPages] = useState(0)
     const [searchText, setSearchText] = useState('')
-    // reudx안에 등록된 전체 state를 가져온다.
-    // store 안에 정의된 toast를 가져오고 그 안의 toasts 배열을 가져온다.
-    const toasts1 = useSelector((state) => {
-        return state.toast.toasts
-    })
-    console.log(toasts1)
 
-    const [toasts, addToast, deleteToast] = useToast()
+    const { addToast } = useToast()
     const limit = 5
 
     useEffect(() => {
@@ -117,7 +108,6 @@ const BlogList = ({ isAdmin }) => {
     }
     return (
         <div>
-            <Toast toasts={toasts} deleteToast={deleteToast} />
             <input
                 type="text"
                 className="form-control"
