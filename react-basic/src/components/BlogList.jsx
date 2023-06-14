@@ -1,11 +1,12 @@
 import axios from 'axios'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import Card from '../components/Card'
 import LoadingSpinner from '../components/LoadingSpinner'
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Pagination from './pagination'
 import { useLocation } from 'react-router-dom'
+import useToast from '../hooks/toast'
 
 const BlogList = ({ isAdmin }) => {
     const navigate = useNavigate()
@@ -18,10 +19,11 @@ const BlogList = ({ isAdmin }) => {
     const [numberOfPosts, setNumberOfPosts] = useState(0)
     const [numberOfPages, setNumberOfPages] = useState(0)
     const [searchText, setSearchText] = useState('')
+
+    const { addToast } = useToast()
     const limit = 5
 
     useEffect(() => {
-        console.log('리렌더링 발생저짐')
         setNumberOfPages(Math.ceil(numberOfPosts / limit))
     }, [numberOfPosts])
 
@@ -40,7 +42,6 @@ const BlogList = ({ isAdmin }) => {
                 _order: 'desc',
                 title_like: searchText,
             }
-            console.log('1')
             if (!isAdmin) {
                 params = { ...params, publish: true }
             }
@@ -61,6 +62,10 @@ const BlogList = ({ isAdmin }) => {
         e.stopPropagation()
         axios.delete(`http://localhost:3001/posts/${id}`).then(() => {
             setPosts((prevPosts) => prevPosts.filter((post) => post.id !== id))
+            addToast({
+                text: 'Successfully deleted',
+                type: 'success',
+            })
         })
     }
 

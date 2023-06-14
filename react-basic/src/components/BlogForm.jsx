@@ -2,18 +2,23 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Toast from './Toast'
+import useToast from '../hooks/toast'
 
 const BlogForm = ({ editing }) => {
+    // 생성한 커스텀훅은 기존 훅 사용하듯이 사용
+    // 이름은 사용자 맘대로 정해도 되지만 순서는 지켜야한다.
+    // useRef, useState로 관리한 toasts, setToastsRerender은 삭제한다.
+    // 기존 addToasts, deleteToasts도 삭제하고 useToasts것을 사용한다.
+    const [toasts, addToast, deleteToast] = useToast()
     const [title, setTitle] = useState('')
     const [originalTitle, setOriginalTitle] = useState('')
     const [body, setBody] = useState('')
     const [originalBody, setOriginalBody] = useState('')
     const [publish, setPublish] = useState(false)
     const [originalPublish, setOriginalPublish] = useState('')
-    // true일 경우 -> form에 데이터를 입력하지 않은 경우 에러 메시지와 빨간색 테두리로 변경
     const [titleError, setTitleError] = useState(false)
     const [bodyError, setBodyError] = useState(false)
-
     const { id } = useParams()
 
     const navigate = useNavigate()
@@ -46,8 +51,6 @@ const BlogForm = ({ editing }) => {
             navigate(`/blogs`)
         }
     }
-    // title, body form 체크해서 비어있는 경우 titleError, bodyError을 true로 변경
-    // 반환되는 validated 값이 하나라도 false라면 다시 유효성 검사 진행되도록 한다.
     const validateForm = () => {
         let validated = true
         if (title === '') {
@@ -63,10 +66,8 @@ const BlogForm = ({ editing }) => {
     }
 
     const onSubmit = () => {
-        // 다시 false로 초기화를 진행해서 다음 
         setTitleError(false)
         setBodyError(false)
-        // 유효성 검사가 진행 되었을 때 post 작성이 완료되도록 한다.
         if (validateForm()) {
             if (editing) {
                 axios
@@ -87,7 +88,11 @@ const BlogForm = ({ editing }) => {
                         publish,
                     })
                     .then(() => {
-                        navigate('/admin')
+                        addToast({
+                            type: 'success',
+                            text: 'successfully toast',
+                        })
+                        // navigate('/admin')
                     })
             }
         }
@@ -99,6 +104,9 @@ const BlogForm = ({ editing }) => {
 
     return (
         <div>
+            {/* 생성된 커스텀 훅 toasts.jsx에서 toasts.current를 그대로 받고있기 때문에
+            toasts로 데이터를 가져온다. */}
+            <Toast toasts={toasts} deleteToast={(id) => deleteToast(id)} />
             <h1>{editing ? 'Edit' : 'Create'} a blog post</h1>
             <div className="mb-3">
                 <label className="form-label">Title</label>
